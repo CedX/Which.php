@@ -9,7 +9,7 @@ use function PHPUnit\Framework\{assertCount, assertEmpty, assertStringEndsWith};
  * Tests the features of the {@see ResultSet} class.
  */
 #[TestDox("ResultSet")]
-final class ResultSetTests extends TestCase {
+class ResultSetTests extends TestCase {
 
 	#[Test, TestDox("all")]
 	public function all(): void {

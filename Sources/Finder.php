@@ -6,7 +6,7 @@ use Symfony\Component\Filesystem\Path;
 /**
  * Finds the instances of an executable in the system path.
  */
-final class Finder {
+class Finder {
 
 	/**
 	 * The list of executable file extensions.
@@ -21,7 +21,7 @@ final class Finder {
 	 * @var string[]
 	 */
 	public array $paths {
-		set => array_map(fn($item) => preg_replace('/^"|"$/', "", $item), $value);
+		set => array_map(fn($item) => (string) preg_replace('/^"|"$/', "", $item), $value);
 	}
 
 	/**

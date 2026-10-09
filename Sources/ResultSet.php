@@ -5,7 +5,7 @@ namespace Belin\Which;
  * Provides convenient access to the stream of search results.
  * @implements \IteratorAggregate<int, \SplFileInfo>
  */
-final class ResultSet implements \IteratorAggregate {
+class ResultSet implements \IteratorAggregate {
 
 	/**
 	 * All instances of the searched command.
