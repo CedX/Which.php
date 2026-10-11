@@ -32,7 +32,7 @@ class Finder {
 	public function __construct(array $paths = [], array $extensions = []) {
 		if (!$paths) {
 			$pathEnv = getenv("PATH") ?: "";
-			$paths = $pathEnv ? explode(self::isWindows() ? ";" : PATH_SEPARATOR, $pathEnv) : [];
+			$paths = $pathEnv ? explode(PATH_SEPARATOR, $pathEnv) : [];
 		}
 
 		if (!$extensions) {
@@ -49,7 +49,7 @@ class Finder {
 	 * @return bool `true` if the current platform is Windows, otherwise `false`.
 	 */
 	public static function isWindows(): bool {
-		return PHP_OS_FAMILY == "Windows" || in_array(getenv("OSTYPE"), ["cygwin", "msys"]);
+		return PHP_OS_FAMILY == "Windows";
 	}
 
 	/**
