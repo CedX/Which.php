@@ -3,7 +3,6 @@ namespace Belin\Which;
 
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\{Test, TestDox};
-use function PHPUnit\Framework\{assertCount, assertEmpty, assertStringEndsWith};
 
 /**
  * Tests the features of the {@see ResultSet} class.
@@ -17,23 +16,23 @@ class ResultSetTests extends TestCase {
 
 		// It should return the path of the `Executable.cmd` file on Windows.
 		$executables = which("Executable", paths: $paths)->all;
-		if (!Finder::isWindows()) assertEmpty($executables);
+		if (!Finder::isWindows()) $executables |> Should::beEmpty();
 		else {
-			assertCount(1, $executables);
-			assertStringEndsWith("\\Resources\\Executable.cmd", $executables[0]);
+			$executables |> count(...) |> Should::be(1);
+			$executables[0] |> Should::endWith("\\Resources\\Executable.cmd");
 		}
 
 		// It should return the path of the `Executable.sh` file on POSIX.
 		$executables = which("Executable.sh", paths: $paths)->all;
-		if (Finder::isWindows()) assertEmpty($executables);
+		if (Finder::isWindows()) $executables |> Should::beEmpty();
 		else {
-			assertCount(1, $executables);
-			assertStringEndsWith("/Resources/Executable.sh", $executables[0]);
+			$executables |> count(...) |> Should::be(1);
+			$executables[0] |> Should::endWith("/Resources/Executable.sh");
 		}
 
 		// It should return an empty array if the searched command is not executable or not found.
-		assertEmpty(which("NotExecutable.sh", paths: $paths)->all);
-		assertEmpty(which("foo", paths: $paths)->all);
+		which("NotExecutable.sh", paths: $paths)->all |> Should::beEmpty();
+		which("foo", paths: $paths)->all |> Should::beEmpty();
 	}
 
 	#[Test, TestDox("first")]
@@ -42,16 +41,16 @@ class ResultSetTests extends TestCase {
 
 		// It should return the path of the `Executable.cmd` file on Windows.
 		$executable = which("Executable", paths: $paths)->first;
-		if (Finder::isWindows()) assertStringEndsWith("\\Resources\\Executable.cmd", $executable ?? "");
-		else assertEmpty($executable);
+		if (Finder::isWindows()) $executable ?? "" |> Should::endWith("\\Resources\\Executable.cmd");
+		else $executable |> Should::beEmpty();
 
 		// It should return the path of the `Executable.sh` file on POSIX.
 		$executable = which("Executable.sh", paths: $paths)->first;
-		if (Finder::isWindows()) assertEmpty($executable);
-		else assertStringEndsWith("/Resources/Executable.sh", $executable ?? "");
+		if (Finder::isWindows()) $executable |> Should::beEmpty();
+		else $executable ?? "" |> Should::endWith("/Resources/Executable.sh");
 
 		// It should return an empty string if the searched command is not executable or not found.
-		assertEmpty(which("NotExecutable.sh", paths: $paths)->first);
-		assertEmpty(which("foo", paths: $paths)->first);
+		which("NotExecutable.sh", paths: $paths)->first |> Should::beEmpty();
+		which("foo", paths: $paths)->first |> Should::beEmpty();
 	}
 }

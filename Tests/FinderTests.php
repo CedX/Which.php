@@ -3,7 +3,6 @@ namespace Belin\Which;
 
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Attributes\{Test, TestDox};
-use function PHPUnit\Framework\{assertCount, assertEmpty, assertEquals, assertFalse, assertStringEndsWith};
 
 /**
  * Tests the features of the {@see Finder} class.
@@ -15,16 +14,16 @@ class FinderTests extends TestCase {
 	public function constructor(): void {
 		// It should set the `paths` property to the value of the `PATH` environment variable by default.
 		$pathEnv = getenv("PATH");
-		$paths = $pathEnv ? explode(PATH_SEPARATOR, $pathEnv) |> array_filter(...) |> array_values(...) : [];
-		assertEquals($paths, new Finder()->paths);
+		$paths = $pathEnv ? explode(PATH_SEPARATOR, $pathEnv) : [];
+		new Finder()->paths |> Should::be($paths);
 
 		// It should set the `extensions` property to the value of the `PATHEXT` environment variable by default.
 		$pathExt = getenv("PATHEXT");
 		$extensions = $pathExt ? explode(";", $pathExt) |> (fn($list) => array_map(mb_strtolower(...), $list)) : [".exe", ".cmd", ".bat", ".com"];
-		assertEquals($extensions, new Finder()->extensions);
+		new Finder()->extensions |> Should::be($extensions);
 
 		// It should put in lower case the list of file extensions.
-		assertEquals([".exe", ".js", ".ps1"], new Finder(extensions: [".EXE", ".JS", ".PS1"])->extensions);
+		new Finder(extensions: [".EXE", ".JS", ".PS1"])->extensions |> Should::be([".exe", ".js", ".ps1"]);
 	}
 
 	#[Test, TestDox("find()")]
@@ -33,17 +32,17 @@ class FinderTests extends TestCase {
 
 		// It should return the path of the `Executable.cmd` file on Windows.
 		$executables = [...$finder->find("Executable")];
-		assertCount(Finder::isWindows() ? 1 : 0, $executables);
-		if (Finder::isWindows()) assertStringEndsWith("\\Resources\\Executable.cmd", $executables[0]->getPathname());
+		$executables |> count(...) |> Should::be(Finder::isWindows() ? 1 : 0);
+		if (Finder::isWindows()) $executables[0]->getPathname() |> Should::endWith("\\Resources\\Executable.cmd");
 
 		// It should return the path of the `Executable.sh` file on POSIX.
 		$executables = [...$finder->find("Executable.sh")];
-		assertCount(Finder::isWindows() ? 0 : 1, $executables);
-		if (!Finder::isWindows()) assertStringEndsWith("/Resources/Executable.sh", $executables[0]->getPathname());
+		$executables |> count(...) |> Should::be(Finder::isWindows() ? 0 : 1);
+		if (!Finder::isWindows()) $executables[0]->getPathname() |> Should::endWith("/Resources/Executable.sh");
 
 		// It should return an empty array if the searched command is not executable or not found.
-		assertEmpty([...$finder->find("NotExecutable.sh")]);
-		assertEmpty([...$finder->find("foo")]);
+		[...$finder->find("NotExecutable.sh")] |> Should::beEmpty();
+		[...$finder->find("foo")] |> Should::beEmpty();
 	}
 
 	#[Test, TestDox("isExecutable()")]
@@ -51,13 +50,13 @@ class FinderTests extends TestCase {
 		$finder = new Finder;
 
 		// It should return `false` if the searched command is not executable or not found.
-		assertFalse($finder->isExecutable("Resources/NotExecutable.sh"));
-		assertFalse($finder->isExecutable("foo/bar/baz.qux"));
+		$finder->isExecutable("Resources/NotExecutable.sh") |> Should::beFalse();
+		$finder->isExecutable("foo/bar/baz.qux") |> Should::beFalse();
 
 		// It should return `false` for a POSIX executable, when test is run on Windows.
-		assertEquals(!Finder::isWindows(), $finder->isExecutable("Resources/Executable.sh"));
+		$finder->isExecutable("Resources/Executable.sh") |> Should::notBe(Finder::isWindows());
 
 		// It should return `false` for a Windows executable, when test is run on POSIX.
-		assertEquals(Finder::isWindows(), $finder->isExecutable("Resources/Executable.cmd"));
+		$finder->isExecutable("Resources/Executable.cmd") |> Should::be(Finder::isWindows());
 	}
 }
