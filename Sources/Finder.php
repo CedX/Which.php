@@ -116,7 +116,8 @@ class Finder {
 	 */
 	private function findExecutables(string $directory, string $command): iterable {
 		$basePath = (string) getcwd();
-		foreach (["", ...self::isWindows() ? $this->extensions : []] as $extension) {
+		$extensions = self::isWindows() ? $this->extensions : [];
+		foreach (["", ...$extensions] as $extension) {
 			$resolvedPath = Path::makeAbsolute(Path::join($directory, "$command$extension"), $basePath);
 			if ($this->isExecutable($resolvedPath)) yield new \SplFileInfo(strtr($resolvedPath, ["/" => DIRECTORY_SEPARATOR]));
 		}
