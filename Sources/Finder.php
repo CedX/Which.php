@@ -69,43 +69,8 @@ class Finder {
 	public function isExecutable(string $file): bool {
 		$fileInfo = new \SplFileInfo($file);
 		if (!$fileInfo->isFile()) return false;
-		return self::isWindows() ? $this->checkFileExtension($fileInfo) : $this->checkFilePermissions($fileInfo);
-	}
-
-	/**
-	 * Checks that the specified file is executable according to the executable file extensions.
-	 * @param \SplFileInfo $fileInfo The file to be checked.
-	 * @return bool Value indicating whether the specified file is executable.
-	 */
-	private function checkFileExtension(\SplFileInfo $fileInfo): bool {
-		return in_array(".".mb_strtolower($fileInfo->getExtension()), $this->extensions);
-	}
-
-	/**
-	 * Checks that the specified file is executable according to its permissions.
-	 * @param \SplFileInfo $fileInfo The file to be checked.
-	 * @return bool Value indicating whether the specified file is executable.
-	 */
-	private function checkFilePermissions(\SplFileInfo $fileInfo): bool {
-		// Others.
-		$perms = $fileInfo->getPerms();
-		if ($perms & 0o001) return true;
-
-		// Group.
-		if ($perms & 0o010) {
-			$gid = function_exists("posix_getgid") ? posix_getgid() : -1;
-			return $gid == $fileInfo->getGroup();
-		}
-
-		// Owner.
-		if ($perms & 0o100) {
-			$uid = function_exists("posix_getuid") ? posix_getuid() : -1;
-			return $uid == $fileInfo->getOwner();
-		}
-
-		// Root.
-		$uid = function_exists("posix_getuid") ? posix_getuid() : -1;
-		return ($perms & (0o100 | 0o010)) != 0 && $uid == 0;
+		if (self::isWindows()) return in_array("." . mb_strtolower($fileInfo->getExtension()), $this->extensions);
+		return posix_access($fileInfo->getPathname(), POSIX_X_OK);
 	}
 
 	/**
