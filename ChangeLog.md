@@ -1,5 +1,10 @@
 # Changelog
 
+## Version [2026.10.0](https://github.com/CedX/Which.php/compare/v12.0.0...v2026.10.0)
+- Removed the `final` modifier from the classes.
+- Switched to a year-based versioning.
+- Updated the package dependencies.
+
 ## Version [12.0.0](https://github.com/CedX/Which.php/compare/v11.2.0...v12.0.0)
 - Breaking change: raised the required [PHP](https://www.php.net) version.
 - Breaking change: renamed the root namespace to `Belin\Which`.
