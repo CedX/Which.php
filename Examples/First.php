@@ -3,5 +3,5 @@ use function Belin\Which\which;
 
 // Finds the first instance of an executable.
 $path = which("foobar")->first;
-if (!$path) print "The 'foobar' command cannot be found.";
-else print "The 'foobar' command is located at: $path";
+if (!$path) echo "The 'foobar' command cannot be found.";
+else echo "The 'foobar' command is located at: $path";

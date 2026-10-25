@@ -21,8 +21,8 @@ It is therefore possible to iterate over the results using a `foreach` loop:
 use function Belin\Which\which;
 
 // Finds all instances of an executable and returns them one at a time.
-print "The 'foobar' command is available at these locations:" . PHP_EOL;
-foreach (which("foobar") as $file) print "- $file" . PHP_EOL;
+echo "The 'foobar' command is available at these locations:", PHP_EOL;
+foreach (which("foobar") as $file) echo "- $file", PHP_EOL;
 ```
 
 The `ResultSet` class also provides two convenient properties:
@@ -38,10 +38,10 @@ If the executable could not be located, it returns an empty array.
 use function Belin\Which\which;
 
 $paths = which("foobar")->all;
-if (!$paths) print "The 'foobar' command cannot be found.";
+if (!$paths) echo "The 'foobar' command cannot be found.";
 else {
-  print "The 'foobar' command is available at these locations:" . PHP_EOL;
-  foreach ($paths as $path) print "- $path" . PHP_EOL;
+  echo "The 'foobar' command is available at these locations:", PHP_EOL;
+  foreach ($paths as $path) echo "- $path", PHP_EOL;
 }
 ```
 
@@ -53,8 +53,8 @@ If the executable could not be located, it returns a `null` reference.
 use function Belin\Which\which;
 
 $path = which("foobar")->first;
-if (!$path) print "The 'foobar' command cannot be found.";
-else print "The 'foobar' command is located at: $path";
+if (!$path) echo "The 'foobar' command cannot be found.";
+else echo "The 'foobar' command is located at: $path";
 ```
 
 ## Options
