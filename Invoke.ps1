@@ -8,7 +8,7 @@ param (
 	})]
 	[ValidateScript(
 		{ Test-Path "$PSScriptRoot/Scripts/$_.php" -PathType Leaf },
-		ErrorMessage = "The specified command does not exist."
+		ErrorMessage = "The specified script does not exist."
 	)]
 	[string] $Script = "Default",
 
