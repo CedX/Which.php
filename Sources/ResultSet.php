@@ -13,7 +13,7 @@ class ResultSet implements \IteratorAggregate {
 	 */
 	public array $all {
 		get => iterator_to_array($this->getIterator())
-			|> (fn($list) => array_map(fn(\SplFileInfo $file) => $file->getPathname(), $list))
+			|> array_map(fn(\SplFileInfo $file) => $file->getPathname(), ?)
 			|> array_unique(...)
 			|> array_values(...);
 	}

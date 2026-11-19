@@ -20,7 +20,7 @@ class FinderTests extends TestCase {
 
 		// It should set the `extensions` property to the value of the `PATHEXT` environment variable by default.
 		$pathExt = getenv("PATHEXT");
-		$extensions = $pathExt ? explode(";", $pathExt) |> (fn($list) => array_map(mb_strtolower(...), $list)) : [".exe", ".cmd", ".bat", ".com"];
+		$extensions = $pathExt ? explode(";", $pathExt) |> array_map(mb_strtolower(...), ?) : [".exe", ".cmd", ".bat", ".com"];
 		new Finder()->extensions |> Should::be($extensions);
 
 		// It should put in lower case the list of file extensions.

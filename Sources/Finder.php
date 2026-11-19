@@ -21,7 +21,7 @@ class Finder {
 	 * @var string[]
 	 */
 	public array $paths {
-		set => array_map(fn($path) => (string) preg_replace('/^"|"$/', "", $path), $value);
+		set => array_map(preg_replace('/^"|"$/', "", ?), $value);
 	}
 
 	/**
