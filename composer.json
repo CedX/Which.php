@@ -26,14 +26,14 @@
 		"which"
 	],
 	"require": {
-		"php": ">=8.5.0",
+		"php": ">=8.6.0",
 		"ext-mbstring": "*",
 		"ext-spl": "*",
 		"symfony/filesystem": "^8.1.11"
 	},
 	"require-dev": {
 		"cedx/should": "^2026.11.0",
-		"phpstan/phpstan": "^2.3.6"
+		"phpstan/phpstan": "^2.3.7"
 	},
 	"support": {
 		"docs": "https://github.com/CedX/Which.php/tree/main/Documentation",
